@@ -19,14 +19,15 @@ Treinar (fine-tuning) um foundation model para, dado um **título de produto** (
 - **Merge:** após treino, `merge_and_unload()` em **fp16** para avaliação (modelo único)
 
 ## Reprodutibilidade (Colab)
-1. **Prepare dataset** (`notebooks/01_prepare_dataset.ipynb`)
+0. **Instala pacotes** (`src/00_colab_install_packages.py`)
+1. **Prepare dataset** (`src/01_prepare_dataset.py`)
    - Salva em: `/content/drive/MyDrive/amazon_ft/cache/prepared_descfmt`
-2. **Treine QLoRA** (`notebooks/02_sft_qLoRA_tinyllama.ipynb`)
+2. **Treine QLoRA** (`src/02_sft_qLoRA_tinyllama.py`)
    - Salva adapter em: `/content/drive/MyDrive/amazon_ft/outputs/tinyllama11b_descfmt_lora/adapter`
-3. **Merge + Avaliação** (`notebooks/03_merge_and_eval.ipynb`)
+3. **Merge + Avaliação** (`src/03_merge_fp16.py`)
    - Modelo mergeado (fp16): `/content/drive/MyDrive/amazon_ft/outputs/tinyllama11b_descfmt_merged_fp16`
    - Gera CSV lado a lado e JSON de métricas em `amazon_ft/outputs/`
-4. **Demo** (`notebooks/04_demo_inference.ipynb`)
+4. **Demo** (`src/04_eval_quick.py`)
    - Geração interativa (antes vs depois)
 
 ## Resultados (execução rápida)
@@ -44,16 +45,16 @@ Treinar (fine-tuning) um foundation model para, dado um **título de produto** (
 
 ## Como rodar (no Colab)
 
-GPU: É necessário habilitar GPU no notebook
+- GPU: É necessário habilitar GPU no notebook
 
-Preparar o dataset
-!python prepare_dataset.py
+- Preparar o dataset
+`!python prepare_dataset.py`
 
-Treinar o modelo
-!python sft_qLoRA_tinyllama.py
+- Treinar o modelo
+`!python sft_qLoRA_tinyllama.py`
 
-Mergear
-!python merge_fp16.py
+- Mergear
+`!python merge_fp16.py`
 
-Avaliar (rápido):
-!python eval_quick.py
+- Avaliar (rápido):
+`!python eval_quick.py`
