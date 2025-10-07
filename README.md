@@ -48,13 +48,13 @@ Treinar (fine-tuning) um foundation model para, dado um **título de produto** (
 - GPU: É necessário habilitar GPU no notebook
 
 - Preparar o dataset
-`!python prepare_dataset.py`
+`!python 01_prepare_dataset.py`
 
 - Treinar o modelo
-`!python sft_qLoRA_tinyllama.py`
+`!python 02_sft_qLoRA_tinyllama.py`
 
 - Mergear
-`!python merge_fp16.py`
+`!python 03_merge_fp16.py`
 
 - Avaliar (rápido):
-`!python eval_quick.py`
+`!python 04_eval_quick.py`
