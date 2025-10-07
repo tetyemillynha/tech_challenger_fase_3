@@ -1,0 +1,11 @@
+transformers>=4.46,<4.47
+accelerate>=0.34,<0.35
+peft>=0.11.1
+bitsandbytes>=0.43.1
+datasets>=2.20.0
+evaluate>=0.4.2
+rouge-score>=0.1.2
+bert-score>=0.3.13
+sentencepiece>=0.2.0
+einops>=0.8.0
+torch>=2.3.0
