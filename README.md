@@ -132,6 +132,79 @@ TrainingArguments(
   - `metrics_tinyllama_descfmt_merged_quick.json`
   - (opcional) `improved_examples_tinyllama_descfmt_merged_quick.csv`
 
+## Resultados da Avaliação
+
+### Arquivos de Resultados (`results/`)
+
+Após executar o processo completo de fine-tuning e avaliação, são gerados os seguintes arquivos na pasta `results/`:
+
+#### 1. **Comparação Lado a Lado** (`side_by_side_tinyllama_descfmt_merged_quick.csv`)
+
+Este arquivo CSV contém uma comparação detalhada entre o modelo baseline (original) e o modelo fine-tuned para 12 amostras aleatórias do conjunto de teste.
+
+**Estrutura do arquivo:**
+- **`id`**: Índice da amostra no dataset de teste
+- **`input_preview`**: Preview do prompt de entrada (truncado para visualização)
+- **`reference_preview`**: Preview da descrição de referência (truncado)
+- **`baseline`**: Resposta gerada pelo modelo TinyLlama original (sem fine-tuning)
+- **`fine_tuned_merged`**: Resposta gerada pelo modelo fine-tuned
+
+**Exemplo de comparação:**
+```
+Baseline: "Product Title: ATT Iphone 4 16GB BLACK CDMA - Premium Leather Case..."
+Fine-tuned: "This is a premium leather case. It is made of the highest quality leather and is designed to fit perfectly to your phone..."
+```
+
+#### 2. **Métricas Quantitativas** (`metrics_tinyllama_descfmt_merged_quick.json`)
+
+Arquivo JSON contendo as métricas ROUGE calculadas para ambos os modelos:
+
+```json
+{
+  "rouge_base": {
+    "rouge1": 0.141,    // ROUGE-1 do modelo baseline
+    "rouge2": 0.051,    // ROUGE-2 do modelo baseline  
+    "rougeL": 0.099,    // ROUGE-L do modelo baseline
+    "rougeLsum": 0.103  // ROUGE-Lsum do modelo baseline
+  },
+  "rouge_ft": {
+    "rouge1": 0.199,    // ROUGE-1 do modelo fine-tuned
+    "rouge2": 0.054,    // ROUGE-2 do modelo fine-tuned
+    "rougeL": 0.144,    // ROUGE-L do modelo fine-tuned
+    "rougeLsum": 0.143  // ROUGE-Lsum do modelo fine-tuned
+  }
+}
+```
+
+### Análise dos Resultados
+
+#### Melhorias Quantitativas
+- **ROUGE-1**: Aumento de **14.1%** para **19.9%** (+41% de melhoria relativa)
+- **ROUGE-L**: Aumento de **9.9%** para **14.4%** (+45% de melhoria relativa)
+- **ROUGE-2**: Melhoria marginal de **5.1%** para **5.4%**
+
+#### Melhorias Qualitativas
+Observando o arquivo CSV, o modelo fine-tuned demonstra:
+
+1. **Melhor Formatação**: Respostas mais estruturadas e coerentes
+2. **Maior Relevância**: Descrições mais específicas sobre os produtos
+3. **Menos Hallucination**: Redução de informações irrelevantes ou incorretas
+4. **Consistência**: Respostas mais consistentes com o formato solicitado
+
+#### Limitações dos Resultados
+- **Subset Pequeno**: Avaliação realizada apenas em 12 amostras (K=12)
+- **Dataset Limitado**: Treinamento em apenas 10k amostras do dataset original
+- **Métricas Simples**: Apenas ROUGE utilizado (sem avaliação humana)
+- **Formato Determinístico**: Target fixo "Description: ..." pode limitar criatividade
+
+### Como Interpretar os Resultados
+
+1. **ROUGE-1**: Mede sobreposição de palavras individuais (melhoria significativa)
+2. **ROUGE-L**: Mede sobreposição de sequências mais longas (melhoria moderada)
+3. **ROUGE-2**: Mede sobreposição de bigramas (melhoria marginal)
+
+O aumento consistente em ROUGE-1 e ROUGE-L indica que o modelo fine-tuned está gerando descrições mais relevantes e estruturadas, enquanto o ROUGE-2 estável sugere que a melhoria não vem apenas de repetição de frases comuns.
+
 ## Limitações
 - Subset do dataset (10k de treino; quick eval K=12)
 - Alvo determinístico (“Description: …”) para deixar o contraste visível
